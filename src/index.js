@@ -7,11 +7,8 @@ import App from 'grommet/components/App';
 import Box from 'grommet/components/Box';
 import Header from 'grommet/components/Header';
 import Footer from 'grommet/components/Footer';
-import Meter from 'grommet/components/Meter';
 import Title from 'grommet/components/Title';
-import Value from 'grommet/components/Value';
-
-import MyFileInput from './myFileInput.js'
+import MainComponent from './MainComponent.js';
 
 class Main extends Component {
   render() {
@@ -19,18 +16,15 @@ class Main extends Component {
       <App centered={false}>
         <Header direction="row" justify="between" size="large"
           pad={{ horizontal: 'medium' }}>
-          <Title>Grommet stand</Title>
+          <Title>Colours of Allure</Title>
         </Header>
         <Box pad='medium'>
-          <Meter value={90} />
-
-          <MyFileInput/>
-
+          <MainComponent/>
         </Box>
         <Footer primary={true} appCentered={true} direction="column"
           align="center" pad="small" colorIndex="grey-1">
           <p>
-            Build your ideas with <a href="http://grommet.io" target="_blank">Grommet</a>!
+            Footer
           </p>
         </Footer>
       </App>

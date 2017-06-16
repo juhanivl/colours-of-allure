@@ -1,11 +1,11 @@
 {
-  "name": "Palette",
+  "name": "coloursofallure",
   "version": "0.1.0",
-  "description": "Sample app using Grommet without the development stack.",
+  "description": "Web application to find the colour palette of image",
   "main": "src/index.js",
   "license": "Apache-2.0",
   "repository": {
-    "type": "git",
+    "type": "git"
   },
   "dependencies": {
     "grommet": "^1.0.0",
