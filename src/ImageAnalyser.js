@@ -6,6 +6,27 @@ export default class ImageAnalyser extends React.Component {
   constructor(props) {
     super(props);
     this.listOfColors = {
+      redSpectrum: {
+        magenta: [],
+        pink: [],
+        red: [],
+        orange: [],
+        yellow: []
+      },
+      greenSpectrum: {
+        yellow: [],
+        lime: [],
+        green: [],
+        mint: [],
+        cyan: []
+      },
+      blueSpectrum: {
+        cyan: [],
+        navy: [],
+        blue: [],
+        purple: [],
+        magenta: []
+      },
       red: [],
       orange:[],
       yellow: [],
@@ -47,20 +68,23 @@ export default class ImageAnalyser extends React.Component {
       var lightness = listOfHSLValues[i][2];
       //console.log("hsl("+hue+","+saturation+"%,"+lightness+"%)");
 
-      /*Start separating pixels into color spectrum by evaluating HSL(Hue, Saturation, Lightness)*/
+      //Start separating pixels into color spectrum by evaluating HSL(Hue, Saturation, Lightness)
+      this.handleHueSorting(hue, listOfHSLValues[i])
+      /*
 
-      /*1.  rid of light and dark pixels*/
+      //1.  rid of light and dark pixels
       if(lightness < 15 || lightness > 90 && saturation<20){
-        /*Push white and black pixels they might be needed*/
+        //Push white and black pixels they might be needed
         if(lightness<15){
           this.smartPush("white" , listOfHSLValues[i])
         }else if(lightness>90){
           this.smartPush("black" , listOfHSLValues[i])
         }
       }else{
-        /*2. Map colors to spectrum based on their Hue value.*/
-        this.handleHueSorting(hue, listOfHSLValues[i])
+        //2. Map colors to spectrum based on their Hue value
+        //this.handleHueSorting(hue, listOfHSLValues[i])
       }
+      */
     }
     /*3. Map colors in their spectrum based on their saturation and brightness.
      * For example dark orange color could be mapped to Brown and dark cyan to Teal
@@ -96,43 +120,64 @@ export default class ImageAnalyser extends React.Component {
      */
 
      if(0<hue&&hue<15){
-       this.smartPush("red" , currentPixel)
+       this.smartPush("red" , currentPixel);
+       this.listOfColors.redSpectrum.red.push(currentPixel);
      }
      else if(15<hue && hue<45){
        this.smartPush("orange" , currentPixel)
+       this.listOfColors.redSpectrum.orange.push(currentPixel);
+
      }
      else if(45<hue&&hue<75){
        this.smartPush("yellow" , currentPixel)
+       this.listOfColors.redSpectrum.yellow.push(currentPixel);
+       this.listOfColors.greenSpectrum.yellow.push(currentPixel);
      }
      else if(75<hue&&hue<105){
        this.smartPush("lime" , currentPixel)
+       this.listOfColors.greenSpectrum.lime.push(currentPixel);
      }
      else if(105<hue&&hue<135){   //120
-       this.smartPush("green" , currentPixel)
+       this.smartPush("green" , currentPixel);
+       this.listOfColors.greenSpectrum.green.push(currentPixel);
      }
      else if(135<hue&&hue<165){
        this.smartPush("mint" , currentPixel)
+       this.listOfColors.greenSpectrum.mint.push(currentPixel);
      }
      else if(165<hue&&hue<195){
        this.smartPush("cyan" , currentPixel)
+       this.listOfColors.greenSpectrum.cyan.push(currentPixel);
+       this.listOfColors.blueSpectrum.cyan.push(currentPixel);
+
      }
      else if(195<hue&&hue<225){
        this.smartPush("navy" , currentPixel)
+       this.listOfColors.blueSpectrum.navy.push(currentPixel);
+
      }
      else if(225<hue&&hue<255){
        this.smartPush("blue" , currentPixel)
+       this.listOfColors.blueSpectrum.blue.push(currentPixel);
+
      }
      else if(255<hue&&hue<285){
        this.smartPush("purple" , currentPixel)
+       this.listOfColors.blueSpectrum.purple.push(currentPixel);
+
      }
      else if(285<hue&&hue<315){
        this.smartPush("magenta" , currentPixel)
+       this.listOfColors.blueSpectrum.magenta.push(currentPixel);
+       this.listOfColors.redSpectrum.magenta.push(currentPixel);
      }
      else if(315<hue&&hue<345){
        this.smartPush("pink" , currentPixel)
+       this.listOfColors.redSpectrum.magenta.push(currentPixel);
      }
      else if(345<hue&&hue<360){
        this.smartPush("red" , currentPixel)
+       this.listOfColors.redSpectrum.red.push(currentPixel);
      }
   }
   /*Push color to it's category */
