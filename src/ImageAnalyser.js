@@ -1,4 +1,5 @@
 import React from 'react';
+import pixelConverter from './pixelConverter.js';
 
 export default class ImageAnalyser extends React.Component {
 
@@ -20,16 +21,8 @@ export default class ImageAnalyser extends React.Component {
       white: [],
       black: []
     }
-
-    this.iterateThroughData = this.iterateThroughData.bind(this);
-    this.rgbToHsl = this.rgbToHsl.bind(this);
   }
-
-  componentDidUpdate(){
-    console.log("componentDidUpdate " , this.props);
-    this.iterateThroughData(this.props.fileData)
-  }
-
+  //first start going through data
   iterateThroughData(data) {
     var listOfHSLValues = [];
 
@@ -39,49 +32,14 @@ export default class ImageAnalyser extends React.Component {
       var blue = data[i + 2];
       var alpha = data[i + 3];
 
-      var hsvValue = this.rgbToHsl([red, green, blue]);
+      var hsvValue = pixelConverter.rgbToHsl([red, green, blue]);
       listOfHSLValues.push(hsvValue);
     }
 
     this.iterateListOfHSLValues(listOfHSLValues);
   }
-  /*
-  componentToHex(c) {
-    var hex = c.toString(16);
-    return hex.length == 1
-      ? "0" + hex
-      : hex;
-  }
 
-  mapRGBToHex(r, g, b) {
-    return "#" + this.componentToHex(r) + this.componentToHex(g) + this.componentToHex(b);
-  }
-  */
-
-  rgbToHsl(c) {
-    var r = c[0]/255
-    var g = c[1]/255
-    var b = c[2]/255;
-
-    var max = Math.max(r, g, b)
-    var min = Math.min(r, g, b);
-    var h, s, l = (max + min) / 2;
-
-    if(max == min) {
-      h = s = 0; // achromatic
-    } else {
-      var d = max - min;
-      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-      switch(max){
-        case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-        case g: h = (b - r) / d + 2; break;
-        case b: h = (r - g) / d + 4; break;
-      }
-      h /= 6;
-    }
-    return new Array(h * 360, s * 100, l * 100);
-  }
-
+  //then through pixel values
   iterateListOfHSLValues(listOfHSLValues){
     for (var i = 0; i < listOfHSLValues.length; i++) {
       var hue = listOfHSLValues[i][0];
@@ -110,12 +68,6 @@ export default class ImageAnalyser extends React.Component {
 
     this.props.onImageAnalysed(this.listOfColors);
   }
-
-  /*Push color to it's category */
-  smartPush(whichColor, pixel){
-    this.listOfColors[whichColor].push(pixel);
-  }
-
 
   handleHueSorting(hue, currentPixel){
     /*Primary hues: Red, Green, and Blue.
@@ -183,6 +135,15 @@ export default class ImageAnalyser extends React.Component {
        this.smartPush("red" , currentPixel)
      }
   }
+  /*Push color to it's category */
+  smartPush(whichColor, pixel){
+    this.listOfColors[whichColor].push(pixel);
+  }
+
+  sayHello(){
+    console.log("Hello");
+  }
+
 
   render() {
     return (

@@ -1,7 +1,8 @@
 import React from 'react';
 import FileLoader from './FileLoader.js'
 import ImageAnalyser from './ImageAnalyser.js';
-import utils from './utility.js';
+import ColorPalette from './ColorPalette.js';
+
 
 export default class MainComponent extends React.Component {
 
@@ -14,19 +15,22 @@ export default class MainComponent extends React.Component {
     this.listOfColors;
   }
 
+
   handleFileData(fileData){
-    console.log("handleFileData: ", fileData);
+    console.log("handleFileData: ");
     this.fileData = fileData;
-    this.setState({
-      fileLoaded: true
-    })
-    console.log("hmmm " , utils);
-    utils.sayHello()
+    //ImageAnalyser.iterateThroughData(fileData)
+     this.refs.imageAnalyser.iterateThroughData(this.fileData )
   }
 
   handleImageAnalysed(listOfColors){
-    console.log("handleImageAnalysed" , listOfColors);
+    console.log("handleImageAnalysed");
     this.listOfColors = listOfColors;
+    this.refs.colorPalette.startSortingColors(this.listOfColors);
+  }
+
+  handlePaletteCreated(palette){
+    console.log("handlePaletteCreated");
   }
 
 
@@ -37,10 +41,15 @@ export default class MainComponent extends React.Component {
       <div>
         <FileLoader
           onFileLoaded={this.handleFileData.bind(this)}
-        />
+          ref="fileLoader" />
         <ImageAnalyser
           fileData={this.fileData}
-          onImageAnalysed={this.handleImageAnalysed.bind(this)}/>
+          onImageAnalysed={this.handleImageAnalysed.bind(this)}
+          ref="imageAnalyser" />
+        <ColorPalette
+          listOfColors={this.listOfColors}
+          onPaletteCreated={this.handlePaletteCreated.bind(this)}
+          ref="colorPalette"/>
       </div>
     );
   }
