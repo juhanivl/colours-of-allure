@@ -11,16 +11,11 @@ export default class ColorPalette extends React.Component {
   }
 
   startSortingColors(listOfColors){
-    this.paletteCandidates = [];
-    console.log("startSortingColors " , this.paletteCandidates);
-    this.listOfColors = listOfColors;
-
     //1. Check spectrum with highest amount of pixels for paletteCandidates
-    this.checkForCandidates(this.listOfColors);
-    console.log("this.paletteCandidates " , this.paletteCandidates);
-
+    var candidate = this.checkForCandidates(listOfColors);
 
     //2. Move on the saturation and light business
+    this.sortCandidatesColors(candidate)
 
 
     /*
@@ -104,22 +99,51 @@ export default class ColorPalette extends React.Component {
 
     if(amounts.red.amount>amounts.green.amount &&
       amounts.red.amount>amounts.blue.amount){
-      this.addCandidate("red" ,  listOfColors.redSpectrum);
-      this.checkForAlternative("red" , amounts);
+      return this.addCandidate("red" ,  listOfColors.redSpectrum);
+      //this.checkForAlternative("red" , amounts);
     }
     else if(amounts.green.amount>amounts.red.amount &&
             amounts.green.amount>amounts.blue.amount){
-      this.addCandidate("green", listOfColors.greenSpectrum);
-      this.checkForAlternative("green" , amounts);
+      return this.addCandidate("green", listOfColors.greenSpectrum);
+      //this.checkForAlternative("green" , amounts);
     }
     else if(amounts.blue.amount>amounts.red.amount &&
             amounts.blue.amount>amounts.green.amount){
-      this.addCandidate("blue", listOfColors.blueSpectrum);
-      this.checkForAlternative("blue" , amounts);
+      return this.addCandidate("blue", listOfColors.blueSpectrum);
+      //this.checkForAlternative("blue" , amounts);
     }
-
-    //Check for alternative candidate
   }
+
+  addCandidate(whichColor , spectrum){
+    var candidate = {
+      color: whichColor,
+      spectrum: spectrum
+    }
+    return candidate;
+    //this.paletteCandidates.push(candidate);
+  }
+
+  sortCandidatesColors(paletteCandidate){
+    console.log("sortCandidatesColors " , paletteCandidate);
+    paletteCandidate.spectrum.green.sort(function(a, b) {
+      return a[2] - b[2];
+    })
+
+    console.log("paletteCandidate.green", paletteCandidate.spectrum.green);
+  }
+
+  render() {
+    return (
+      <div>
+        <p>ColorPalette</p>
+      </div>
+    );
+  }
+
+
+
+
+
 
   //check for alternative palette candidate from rest of the spectrum
   checkForAlternative(primaryCandidateKey,amounts){
@@ -136,26 +160,10 @@ export default class ColorPalette extends React.Component {
         var alternativeString = alternative.toString();
         var spectrumString = alternativeString+"Spectrum"
         this.addCandidate(alternativeString , this.listOfColors[spectrumString])
+
       }
     }
   }
-
-  addCandidate(whichColor , spectrum){
-    var candidate = {
-      color: whichColor,
-      spectrum: spectrum
-    }
-    this.paletteCandidates.push(candidate);
-  }
-
-  render() {
-    return (
-      <div>
-        <p>ColorPalette</p>
-      </div>
-    );
-  }
-
 }
 /*WHEN DONE CALL THIS
 this.props.onPaletteCreated(this.palette)*/
